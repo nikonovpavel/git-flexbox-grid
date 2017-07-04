@@ -75,12 +75,15 @@
 // order – порядок следования отдельно взятого flex-блока внутри flex-контейнера.
 
 // ------------------------------------------------------------
+// setting flex grid
+// ------------------------------------------------------------
 
 // setting flex grid var
 
-$f-row-width: 80%;
+$f-row-width: 100%;
 $f-col-start: 1;
-$f-col-end: 12;
+$f-col-end: 8;
+$f-col-margin: .5%;
 $f-col-common: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95;
 
 //setting flex grid row
@@ -94,28 +97,35 @@ $f-col-common: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85
 	align-items: flex-start;
 	align-content: flex-start;
 	justify-content: flex-start;
-
-	margin: 20px auto;
 }
+
+// ------------------------------------------------------------
+// setting flex grid add class
+// ------------------------------------------------------------
+
+.f-row--nowrap {flex-wrap: nowrap !important;}
 
 //setting flex grid col
 
 [class*='f-col-'] {
 	flex: 0 1 auto;
 	box-sizing: border-box;
+	margin: 0 $f-col-margin;
 
 	color: $white;
 	text-align: center;
 	padding: 10px 20px;
+	margin-bottom: 20px;
 	background-color: tomato;
+	outline: 1px solid red;
 }
 
 //setting function flex grid col
 
 @for $i from $f-col-start through $f-col-end {
 	.f-col-#{$i} {
-		flex: 0 0 100% / $i;
-		max-width: 100% / $i;
+		flex: 0 0 (100% -(($f-col-margin*2)*$i)) / $i;
+		max-width: (100% -(($f-col-margin*2)*$i)) / $i;
 	}
 }
 
@@ -125,8 +135,37 @@ $f-col-common: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85
 	.f-col-#{$i} {width: percentage($i / 100);}
 }
 
-//setting function flex grid col offset
+// ------------------------------------------------------------
+// setting flex grid responsive
+// ------------------------------------------------------------
 
-@each $i in $f-col-common {
-	.f-col-offset-#{$i} {margin-left: percentage($i / 100);}
+@media only screen and (max-width: $screen-medium) {
+	.f-row {flex-wrap: wrap;}
+	.f-col-10 {
+		flex: 0 0 19%;
+		max-width: 19%;
+	}
+	.f-col-8 {
+		flex: 0 0 24%;
+		max-width: 24%;
+	}
+}
+
+@media only screen and (max-width: $handheld-large) {
+	.f-row--nowrap {flex-wrap: wrap !important;}
+	.f-col-4 {
+		flex: 0 0 49%;
+		max-width: 49%;
+	}
+	.f-col-30, .f-col-70 {
+		flex: 0 0 99%;
+		max-width: 99%
+	}
+}
+
+@media only screen and (max-width: $handheld-medium) {
+	[class*='f-col-'] {
+		flex: 0 0 99%;
+		max-width: 99%;
+	}
 }
